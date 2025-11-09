@@ -1,4 +1,4 @@
-package precourse.openmission.purchase;
+package precourse.openmission.domain;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

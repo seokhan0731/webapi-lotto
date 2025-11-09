@@ -2,7 +2,7 @@ package precourse.openmission.purchase;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
+import precourse.openmission.domain.Amount;
 
 import java.util.List;
 
