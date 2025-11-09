@@ -19,19 +19,35 @@ public class PurchaseServiceTest {
     @Autowired
     PurchaseRepository purchaseRepository;
 
+    @BeforeEach
+    void setUp() {
+        //Given
+        int money = 2000;
+        purchaseRepository.deleteAll();
+        purchaseService.purchase(money);
+    }
+
     @DisplayName("db에 구매 금액 및 수량 저장 지휘")
     @Test
     void saveByService() {
-        //Given
-        int money = 2000;
-
         //When
-        purchaseService.purchase(money);
+        List<Purchase> found = purchaseRepository.findAll();
 
         //Then
-        List<Purchase> found = purchaseRepository.findAll();
         assertThat(found).hasSize(1);
-        assertThat(found.get(0).getAmount()).isEqualTo(money);
+        assertThat(found.get(0).getAmount()).isEqualTo(2000);
         assertThat(found.get(0).getQuantity()).isEqualTo(2);
+    }
+
+    @DisplayName("db에 저장 된 값 조회")
+    @Test
+    void getByService() {
+        //When
+        List<Purchase> getByService = purchaseService.getPurchases();
+
+        //Then
+        assertThat(getByService).hasSize(1);
+        assertThat(getByService.get(0).getAmount()).isEqualTo(2000);
+        assertThat(getByService.get(0).getQuantity()).isEqualTo(2);
     }
 }
