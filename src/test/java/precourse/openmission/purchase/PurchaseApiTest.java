@@ -6,14 +6,17 @@ import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
 
-import static org.assertj.core.api.Assertions.assertThatThrownBy;
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class PurchaseApiTest extends ApiTest {
+    @Autowired
+    PurchaseRepository purchaseRepository;
+
     @DisplayName("구매 API 정상 작동 확인")
     @Test
     void purchase() {
@@ -80,4 +83,31 @@ public class PurchaseApiTest extends ApiTest {
         assertThat(errorResponse.statusCode()).isEqualTo(400);
         assertThat(errorResponse.body().asString()).isEqualTo("[ERROR] 구입 금액은 양수여야합니다.");
     }
+
+    @DisplayName("구매내역 조회 API 정상 작동 확인")
+    @Test
+    void viewAllPurchaseHistory() {
+        //Given
+        purchaseRepository.save(new Purchase(2000, 2));
+        purchaseRepository.save(new Purchase(3000, 3));
+        //When
+        ExtractableResponse<Response> response = RestAssured.given()
+                .when()
+                .get("/purchase/history")
+                .then()
+                .extract();
+
+        //Then
+        JsonPath jsonPath = response.body().jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(200),
+                () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
+                () -> assertThat(jsonPath.getList("$")).hasSize(2),
+                () -> assertThat(jsonPath.getInt("[0].money")).isEqualTo(2000),
+                () -> assertThat(jsonPath.getInt("[0].quantity")).isEqualTo(2),
+                () -> assertThat(jsonPath.getInt("[1].money")).isEqualTo(3000),
+                () -> assertThat(jsonPath.getInt("[1].quantity")).isEqualTo(3)
+        );
+    }
+
 }
