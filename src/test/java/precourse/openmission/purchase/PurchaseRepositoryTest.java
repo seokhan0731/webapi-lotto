@@ -24,7 +24,7 @@ public class PurchaseRepositoryTest {
         //Then
         Purchase found = purchaseRepository.findById(savedPurchase.getId()).orElse(null);
         assertThat(found).isNotNull();
-        assertThat((found.getAmount())).isEqualTo(purchase.getAmount());
+        assertThat((found.getMoney())).isEqualTo(purchase.getMoney());
         assertThat((found.getQuantity())).isEqualTo(purchase.getQuantity());
     }
 }

@@ -35,7 +35,7 @@ public class PurchaseServiceTest {
 
         //Then
         assertThat(found).hasSize(1);
-        assertThat(found.get(0).getAmount()).isEqualTo(2000);
+        assertThat(found.get(0).getMoney()).isEqualTo(2000);
         assertThat(found.get(0).getQuantity()).isEqualTo(2);
     }
 
@@ -47,7 +47,7 @@ public class PurchaseServiceTest {
 
         //Then
         assertThat(getByService).hasSize(1);
-        assertThat(getByService.get(0).getAmount()).isEqualTo(2000);
+        assertThat(getByService.get(0).getMoney()).isEqualTo(2000);
         assertThat(getByService.get(0).getQuantity()).isEqualTo(2);
     }
 

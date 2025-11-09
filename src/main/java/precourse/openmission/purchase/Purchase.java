@@ -18,11 +18,11 @@ public class Purchase {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private int amount;
+    private int money;
     private int quantity;
 
-    public Purchase(int amount, int quantity) {
-        this.amount = amount;
+    public Purchase(int money, int quantity) {
+        this.money = money;
         this.quantity = quantity;
     }
 }
