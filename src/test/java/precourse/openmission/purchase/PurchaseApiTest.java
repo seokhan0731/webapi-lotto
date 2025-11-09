@@ -9,6 +9,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
 
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -36,5 +37,26 @@ public class PurchaseApiTest extends ApiTest {
                 () -> assertThat(jsonPath.getInt("money")).isEqualTo(2000),
                 () -> assertThat(jsonPath.getInt("quantity")).isEqualTo(2)
         );
+    }
+
+    @DisplayName("구입 금액 1000원으로 나누어 떨어지지 않는 경우 예외처리")
+    @Test
+    void amountDivideException() {
+        //Given
+        String invalidJson = "{\"money\": 1500}";
+
+        //When
+        Response errorResponse = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(invalidJson)
+                .when()
+                .post("/purchase")
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertThat(errorResponse.statusCode()).isEqualTo(400);
+        assertThat(errorResponse.body().asString()).isEqualTo("[ERROR] 구입 금액은 1,000원으로 나누어 떨어져야합니다.");
     }
 }
