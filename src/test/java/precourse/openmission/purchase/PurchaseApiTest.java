@@ -59,4 +59,25 @@ public class PurchaseApiTest extends ApiTest {
         assertThat(errorResponse.statusCode()).isEqualTo(400);
         assertThat(errorResponse.body().asString()).isEqualTo("[ERROR] 구입 금액은 1,000원으로 나누어 떨어져야합니다.");
     }
+
+    @DisplayName("구입 금액 양수가 아닌 경우 예외처리")
+    @Test
+    void notPositiveMoneyException() {
+        //Given
+        String invalidJson = "{\"money\": -1500}";
+
+        //When
+        Response errorResponse = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(invalidJson)
+                .when()
+                .post("/purchase")
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertThat(errorResponse.statusCode()).isEqualTo(400);
+        assertThat(errorResponse.body().asString()).isEqualTo("[ERROR] 구입 금액은 양수여야합니다.");
+    }
 }
