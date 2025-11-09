@@ -13,7 +13,7 @@ public class PurchaseService {
 
     private final PurchaseRepository purchaseRepository;
 
-    public void purchase(int money) {
+    public Purchase purchase(int money) {
         Amount amount = new Amount(money);
 
         int validAmount = amount.getAmount();
@@ -21,6 +21,8 @@ public class PurchaseService {
 
         Purchase purchase = new Purchase(validAmount, quantity);
         purchaseRepository.save(purchase);
+
+        return purchase;
     }
 
     public List<Purchase> getPurchases() {
