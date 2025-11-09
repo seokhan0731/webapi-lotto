@@ -28,6 +28,10 @@ public class Amount {
         }
     }
 
+    public int getAmount() {
+        return amount;
+    }
+
     /**
      * 구매 금액만큼의 발행할 로또 개수를 반환합니다.
      *
