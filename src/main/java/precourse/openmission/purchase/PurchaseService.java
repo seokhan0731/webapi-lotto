@@ -4,6 +4,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 
 @Service
 @RequiredArgsConstructor
@@ -19,5 +21,9 @@ public class PurchaseService {
 
         Purchase purchase = new Purchase(validAmount, quantity);
         purchaseRepository.save(purchase);
+    }
+
+    public List<Purchase> getPurchases() {
+        return purchaseRepository.findAll();
     }
 }
