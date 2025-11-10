@@ -1,6 +1,7 @@
 package precourse.openmission.issue;
 
 import lombok.RequiredArgsConstructor;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,6 +17,17 @@ public class MyLottoController {
     @PostMapping(value = "/issue/{id}")
     public List<MyLottoResponseDTO> issue(@PathVariable Long id) {
         List<MyLotto> lottos = myLottoService.saveLottos(id);
+
+        List<MyLottoResponseDTO> responseDTOs = lottos.stream()
+                .map(lotto -> new MyLottoResponseDTO(lotto))
+                .toList();
+
+        return responseDTOs;
+    }
+
+    @GetMapping(value = "/mylotto/{id}")
+    public List<MyLottoResponseDTO> getMyLotto(@PathVariable Long id) {
+        List<MyLotto> lottos = myLottoService.getLottos(id);
 
         List<MyLottoResponseDTO> responseDTOs = lottos.stream()
                 .map(lotto -> new MyLottoResponseDTO(lotto))
