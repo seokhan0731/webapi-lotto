@@ -18,21 +18,19 @@ public class MyLottoController {
     public List<MyLottoResponseDTO> issue(@PathVariable Long id) {
         List<MyLotto> lottos = myLottoService.saveLottos(id);
 
-        List<MyLottoResponseDTO> responseDTOs = lottos.stream()
-                .map(lotto -> new MyLottoResponseDTO(lotto))
-                .toList();
-
-        return responseDTOs;
+        return myLottoToDTO(lottos);
     }
 
     @GetMapping(value = "/mylotto/{id}")
     public List<MyLottoResponseDTO> getMyLotto(@PathVariable Long id) {
         List<MyLotto> lottos = myLottoService.getLottos(id);
 
-        List<MyLottoResponseDTO> responseDTOs = lottos.stream()
-                .map(lotto -> new MyLottoResponseDTO(lotto))
-                .toList();
+        return myLottoToDTO(lottos);
+    }
 
-        return responseDTOs;
+    private List<MyLottoResponseDTO> myLottoToDTO(List<MyLotto> myLottos) {
+        return myLottos.stream()
+                .map(MyLottoResponseDTO::new)
+                .toList();
     }
 }
