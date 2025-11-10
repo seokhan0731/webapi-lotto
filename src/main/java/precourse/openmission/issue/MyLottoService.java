@@ -52,4 +52,9 @@ public class MyLottoService {
                 })
                 .toList();
     }
+
+    public List<MyLotto> getLottos(Long purchaseId) {
+        Purchase foundPurchase = validateId(purchaseId);
+        return lottoRepository.findByPurchaseId(purchaseId);
+    }
 }
