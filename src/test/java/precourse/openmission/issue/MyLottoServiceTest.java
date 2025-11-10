@@ -15,6 +15,7 @@ import precourse.openmission.purchase.PurchaseRepository;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
@@ -87,5 +88,27 @@ public class MyLottoServiceTest {
                 () -> assertThat(returnLottos.get(0).getNumbers()).isEqualTo("1,2,3,4,5,6"),
                 () -> assertThat(returnLottos.get(1).getNumbers()).isEqualTo("7,8,9,10,11,12")
         );
+    }
+
+    @DisplayName("유효하지 않은 ID로 로또 번호 저장 시도")
+    @Test
+    void saveLottosByFakeId() {
+        //When
+        Long fakeId = 123L;
+
+        //Then
+        assertThatThrownBy(() -> myLottoService.saveLottos(fakeId)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다.");
+    }
+
+    @DisplayName("유효하지 않은 ID로 로또 번호 조회 시도")
+    @Test
+    void getLottosByFakeId() {
+        //When
+        Long fakeId = 123L;
+
+        //Then
+        assertThatThrownBy(() -> myLottoService.getLottos(fakeId)).isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다.");
     }
 }
