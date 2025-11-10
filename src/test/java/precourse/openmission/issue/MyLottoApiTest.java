@@ -76,4 +76,32 @@ public class MyLottoApiTest extends ApiTest {
                 () -> assertThat(jsonPath.getString("[1].numbers")).isEqualTo("7,8,9,10,11,12")
         );
     }
+
+    @DisplayName("조회 API 정상 작동 확인")
+    @Test
+    void viewMyLotto() {
+        //Given
+        RestAssured.given()
+                .when()
+                .post("/issue/" + purchaseId)
+                .then()
+                .extract();
+
+        //When
+        ExtractableResponse<Response> response = RestAssured.given()
+                .when()
+                .get("/mylotto/" + purchaseId)
+                .then()
+                .extract();
+
+        //Then
+        JsonPath jsonPath = response.jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(200),
+                () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
+                () -> assertThat(jsonPath.getList("$")).hasSize(2),
+                () -> assertThat(jsonPath.getString("[0].numbers")).isEqualTo("1,2,3,4,5,6"),
+                () -> assertThat(jsonPath.getString("[1].numbers")).isEqualTo("7,8,9,10,11,12")
+        );
+    }
 }
