@@ -25,8 +25,8 @@ public class PurchaseController {
      * @throws IllegalArgumentException money가 1000원 단위가 아니거나 양수가 아닌 경우, HTTP Status 400 리턴
      */
     @PostMapping(value = "/purchase", produces = MediaType.APPLICATION_JSON_VALUE)
-    public Purchase savePurchase(@RequestBody PurchaseRequestDTO purchaseRequestDTO) {
-        return purchaseService.purchase(purchaseRequestDTO.getMoney());
+    public PurchaseResponseDTO savePurchase(@RequestBody PurchaseRequestDTO purchaseRequestDTO) {
+        return new PurchaseResponseDTO(purchaseService.purchase(purchaseRequestDTO.getMoney()));
     }
 
     /**
@@ -46,7 +46,10 @@ public class PurchaseController {
      * @return HTTP StatusCode 200. Purchase 객체(구매 금액, 수량)의 리스트
      */
     @GetMapping(value = "/purchase/history", produces = MediaType.APPLICATION_JSON_VALUE)
-    public List<Purchase> getHistory() {
-        return purchaseService.getPurchases();
+    public List<PurchaseResponseDTO> getHistory() {
+        return purchaseService.getPurchases()
+                .stream()
+                .map(PurchaseResponseDTO::new)
+                .toList();
     }
 }
