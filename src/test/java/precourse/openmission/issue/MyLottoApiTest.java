@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
 import precourse.openmission.domain.NumberGenerator;
 import precourse.openmission.purchase.Purchase;
@@ -102,6 +103,30 @@ public class MyLottoApiTest extends ApiTest {
                 () -> assertThat(jsonPath.getList("$")).hasSize(2),
                 () -> assertThat(jsonPath.getString("[0].numbers")).isEqualTo("1,2,3,4,5,6"),
                 () -> assertThat(jsonPath.getString("[1].numbers")).isEqualTo("7,8,9,10,11,12")
+        );
+    }
+
+    @DisplayName("유효하지 않은 id 입력 시, 에러메시지 반환")
+    @Test
+    void invalidPurchaseId() {
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .post("/issue/123")
+                .then()
+                .extract()
+                .response();
+        //When
+        Response errorResponseToGet = RestAssured.given()
+                .get("/mylotto/123")
+                .then()
+                .extract()
+                .response();
+        //Then
+        assertAll(
+                () -> assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> assertThat(errorResponseToPost.body().asString()).isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다."),
+                () -> assertThat(errorResponseToGet.statusCode()).isEqualTo(400),
+                () -> assertThat(errorResponseToGet.body().asString()).isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
     }
 }
