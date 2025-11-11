@@ -1,4 +1,4 @@
-package precourse.openmission.issue;
+package precourse.openmission.mylotto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -24,7 +24,7 @@ public class MyLottoController {
      * @return HTTP StatusCode 200. 발행된 로또들의 리스트
      * @throws IllegalArgumentException 유효하지 않은 id가 입력되었을 때, HTTP 400을 반환합니다.
      */
-    @PostMapping(value = "/issue/{id}")
+    @PostMapping(value = "/issue/mylotto/{id}")
     public List<MyLottoResponseDTO> issue(@PathVariable Long id) {
         List<MyLotto> lottos = myLottoService.saveLottos(id);
 

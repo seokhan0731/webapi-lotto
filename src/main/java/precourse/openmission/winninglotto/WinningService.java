@@ -1,4 +1,4 @@
-package precourse.openmission.winning;
+package precourse.openmission.winninglotto;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

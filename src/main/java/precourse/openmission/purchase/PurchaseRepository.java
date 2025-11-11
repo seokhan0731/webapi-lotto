@@ -1,9 +1,6 @@
 package precourse.openmission.purchase;
 
 import org.springframework.data.jpa.repository.JpaRepository;
-import precourse.openmission.issue.MyLotto;
-
-import java.util.List;
 
 /**
  * DB를 관리하는 로직을 갖는 repository 계층

@@ -1,4 +1,4 @@
-package precourse.openmission.winning;
+package precourse.openmission.winninglotto;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;

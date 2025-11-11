@@ -1,4 +1,4 @@
-package precourse.openmission.issue;
+package precourse.openmission.mylotto;
 
 import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
@@ -11,7 +11,6 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
-import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
 import precourse.openmission.domain.NumberGenerator;
 import precourse.openmission.purchase.Purchase;
@@ -63,7 +62,7 @@ public class MyLottoApiTest extends ApiTest {
         //When
         ExtractableResponse<Response> response = RestAssured.given()
                 .when()
-                .post("/issue/" + purchaseId)
+                .post("/issue/mylotto/" + purchaseId)
                 .then()
                 .extract();
 
@@ -84,7 +83,7 @@ public class MyLottoApiTest extends ApiTest {
         //Given
         RestAssured.given()
                 .when()
-                .post("/issue/" + purchaseId)
+                .post("/issue/mylotto/" + purchaseId)
                 .then()
                 .extract();
 
@@ -111,7 +110,7 @@ public class MyLottoApiTest extends ApiTest {
     void invalidPurchaseId() {
         //When
         Response errorResponseToPost = RestAssured.given()
-                .post("/issue/123")
+                .post("/issue/mylotto/123")
                 .then()
                 .extract()
                 .response();

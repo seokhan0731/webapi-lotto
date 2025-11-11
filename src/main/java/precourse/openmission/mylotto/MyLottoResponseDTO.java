@@ -1,4 +1,4 @@
-package precourse.openmission.issue;
+package precourse.openmission.mylotto;
 
 import lombok.Getter;
 

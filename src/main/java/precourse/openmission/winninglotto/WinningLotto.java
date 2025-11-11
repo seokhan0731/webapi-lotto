@@ -1,4 +1,4 @@
-package precourse.openmission.winning;
+package precourse.openmission.winninglotto;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
