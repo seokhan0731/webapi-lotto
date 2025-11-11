@@ -106,5 +106,12 @@ public class WinningServiceTest {
                 .hasMessage("[ERROR] 로또 번호는 1~45 사이의 숫자만 가집니다.");
     }
 
+    @DisplayName("중복된 숫자 존재한 로또 저장 예외 구현")
+    @Test
+    void duplicatedNumbers() {
+        assertThatThrownBy(() -> winningService.saveLotto(List.of(2, 2, 3, 4, 5, 6), purchaseId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 로또 번호는 중복되면 안됩니다.");
+    }
 
 }
