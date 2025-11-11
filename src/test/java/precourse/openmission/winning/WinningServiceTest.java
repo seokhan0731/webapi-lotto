@@ -46,9 +46,6 @@ public class WinningServiceTest {
     @DisplayName("db에 구매 id에 따른 당첨 로또 번호 저장 지휘")
     @Test
     void saveWinningLotto() {
-        //Given
-        WinningLotto winningLotto = new WinningLotto(winningNumbersAsString, savedPurchase);
-
         //When
         WinningLotto savedLotto = winningService.saveLotto(winningNumbers, purchaseId);
 
@@ -56,6 +53,22 @@ public class WinningServiceTest {
         assertAll(
                 () -> assertThat(savedLotto.getNumbers()).isEqualTo(winningNumbersAsString),
                 () -> assertThat(savedLotto.getId()).isEqualTo(purchaseId)
+        );
+    }
+
+    @DisplayName("db에 구매 id에 따른 당첨 로또 번호 조회 지휘")
+    @Test
+    void viewWinningLotto() {
+        //Given
+        WinningLotto savedLotto = winningService.saveLotto(winningNumbers, purchaseId);
+
+        //When
+        WinningLotto foundLotto = winningService.getLotto(purchaseId);
+
+        //Then
+        assertAll(
+                () -> assertThat(foundLotto.getNumbers()).isEqualTo(winningNumbersAsString),
+                () -> assertThat(foundLotto.getId()).isEqualTo(purchaseId)
         );
     }
 }
