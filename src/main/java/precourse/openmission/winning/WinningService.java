@@ -42,4 +42,9 @@ public class WinningService {
                 .map(String::valueOf)
                 .collect(Collectors.joining(","));
     }
+
+    public WinningLotto getLotto(Long purchaseId) {
+        Purchase foundPurchase = validateId(purchaseId);
+        return winningRepository.findByPurchaseId(foundPurchase.getId());
+    }
 }
