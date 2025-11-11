@@ -1,0 +1,61 @@
+package precourse.openmission.winning;
+
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.context.SpringBootTest;
+import precourse.openmission.purchase.Purchase;
+import precourse.openmission.purchase.PurchaseRepository;
+
+import java.util.List;
+import java.util.stream.Collectors;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+@SpringBootTest
+public class WinningServiceTest {
+    @Autowired
+    WinningService winningService;
+
+    @Autowired
+    WinningRepository winningRepository;
+
+    @Autowired
+    PurchaseRepository purchaseRepository;
+
+    Purchase savedPurchase;
+    Long purchaseId;
+    List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
+    String winningNumbersAsString;
+
+    @BeforeEach
+    void setUp() {
+        winningRepository.deleteAll();
+        purchaseRepository.deleteAll();
+
+        Purchase purchase = new Purchase(2000, 2);
+        savedPurchase = purchaseRepository.save(purchase);
+        purchaseId = savedPurchase.getId();
+        winningNumbersAsString = winningNumbers.stream()
+                .map(String::valueOf)
+                .collect(Collectors.joining(","));
+    }
+
+    @DisplayName("db에 구매 id에 따른 당첨 로또 번호 저장 지휘")
+    @Test
+    void saveWinningLotto() {
+        //Given
+        WinningLotto winningLotto = new WinningLotto(winningNumbersAsString, savedPurchase);
+
+        //When
+        WinningLotto savedLotto = winningService.saveLotto(winningNumbers, purchaseId);
+
+        //Then
+        assertAll(
+                () -> assertThat(savedLotto.getNumbers()).isEqualTo(winningNumbersAsString),
+                () -> assertThat(savedLotto.getId()).isEqualTo(purchaseId)
+        );
+    }
+}
