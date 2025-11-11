@@ -98,5 +98,13 @@ public class WinningServiceTest {
                 .hasMessage("[ERROR] 로또 번호는 6개여야 합니다.");
     }
 
+    @DisplayName("유효한 로또 범위가 아닌 숫자 저장 예외 구현")
+    @Test
+    void invalidRangeNumbers() {
+        assertThatThrownBy(() -> winningService.saveLotto(List.of(0, 2, 3, 4, 5, 6), purchaseId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 로또 번호는 1~45 사이의 숫자만 가집니다.");
+    }
+
 
 }
