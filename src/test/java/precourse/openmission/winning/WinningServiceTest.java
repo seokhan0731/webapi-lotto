@@ -81,12 +81,22 @@ public class WinningServiceTest {
 
         //Then
         assertAll(
-                () -> assertThatThrownBy(() -> winningService.saveLotto(winningNumbers, fakeId)).isInstanceOf(IllegalArgumentException.class)
+                () -> assertThatThrownBy(() -> winningService.saveLotto(winningNumbers, fakeId))
+                        .isInstanceOf(IllegalArgumentException.class)
                         .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다."),
-                () -> assertThatThrownBy(() -> winningService.getLotto(fakeId)).isInstanceOf(IllegalArgumentException.class)
+                () -> assertThatThrownBy(() -> winningService.getLotto(fakeId))
+                        .isInstanceOf(IllegalArgumentException.class)
                         .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
-
     }
+
+    @DisplayName("6개가 아닌 로또 번호 저장 예외 구현")
+    @Test
+    void not6Numbers() {
+        assertThatThrownBy(() -> winningService.saveLotto(List.of(1, 2, 3, 4, 5, 6, 7), purchaseId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 로또 번호는 6개여야 합니다.");
+    }
+
 
 }
