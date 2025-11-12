@@ -25,16 +25,9 @@ public class BonusNumberService {
     public BonusNumber saveBonus(int number, Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
 
-        WinningLotto savedLotto = winningRepository.findByPurchaseId(foundPurchase.getId());
+        List<Integer> winningNumbers = stringToIntegerList(purchaseId);
 
-        String Numbers = savedLotto.getNumbers();
-        List<String> stringArray = Arrays.asList(Numbers.split(","));
-        List<Integer> integerList = stringArray.stream()
-                .mapToInt(Integer::parseInt)
-                .boxed()
-                .toList();
-
-        Lotto winningLotto = new Lotto(integerList);
+        Lotto winningLotto = new Lotto(winningNumbers);
         Bonus newBonus = new Bonus(number, winningLotto);
 
         BonusNumber bonusEntity = new BonusNumber(newBonus.getNumber(), foundPurchase);
@@ -44,5 +37,17 @@ public class BonusNumberService {
     private Purchase validateId(Long purchaseId) {
         return purchaseRepository.findById(purchaseId).orElseThrow(() ->
                 new IllegalArgumentException("[ERROR] 해당 구매 내역을 찾을 수 없습니다."));
+    }
+
+    private List<Integer> stringToIntegerList(Long validId) {
+        WinningLotto savedLotto = winningRepository.findByPurchaseId(validId);
+
+        String numbers = savedLotto.getNumbers();
+        List<String> stringArray = Arrays.asList(numbers.split(","));
+
+        return stringArray.stream()
+                .mapToInt(Integer::parseInt)
+                .boxed()
+                .toList();
     }
 }
