@@ -178,4 +178,27 @@ public class WinningApiTest extends ApiTest {
                         .isEqualTo("[ERROR] 로또 번호는 중복되면 안됩니다.")
         );
     }
+
+    @DisplayName("유효하지 않은 범위의 수가 있는 당첨 로또 저장하는 경우")
+    @Test
+    void saveInvalidRangeNumber() {
+        //Given
+        String numbersJson = "{\"numbers\":[1,2,3,4,5,50]}";
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(numbersJson)
+                .post("/issue/winninglotto/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 로또 번호는 1~45 사이의 숫자만 가집니다.")
+        );
+    }
 }
