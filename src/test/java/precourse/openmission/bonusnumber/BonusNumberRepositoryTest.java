@@ -1,4 +1,4 @@
-package precourse.openmission.bonus;
+package precourse.openmission.bonusnumber;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
