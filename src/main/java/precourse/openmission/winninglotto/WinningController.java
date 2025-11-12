@@ -1,10 +1,7 @@
 package precourse.openmission.winninglotto;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -19,5 +16,11 @@ public class WinningController {
 
     private WinningResponseDTO lottoToDTO(WinningLotto winningLotto) {
         return new WinningResponseDTO(winningLotto);
+    }
+
+    @GetMapping(value = "/winninglotto/{id}")
+    public WinningResponseDTO getLotto(@PathVariable Long id) {
+        WinningLotto savedLotto = winningService.getLotto(id);
+        return lottoToDTO(savedLotto);
     }
 }
