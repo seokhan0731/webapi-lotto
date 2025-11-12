@@ -12,14 +12,14 @@ public class BonusNumber {
     @Id
     private Long id;
 
-    private String number;
+    private int number;
 
     @OneToOne
     @MapsId
     @JoinColumn(name = "id")
     private Purchase purchase;
 
-    public BonusNumber(String number, Purchase purchase) {
+    public BonusNumber(int number, Purchase purchase) {
         this.number = number;
         this.purchase = purchase;
     }

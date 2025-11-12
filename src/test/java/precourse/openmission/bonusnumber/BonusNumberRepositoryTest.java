@@ -24,14 +24,14 @@ public class BonusNumberRepositoryTest {
         Purchase purchase = new Purchase(2000, 2);
         Purchase savedPurchase = purchaseRepository.save(purchase);
         Long purchaseId = savedPurchase.getId();
-        String bonus = "1";
+        int bonus = 1;
         BonusNumber bonusNumber = new BonusNumber(bonus, purchase);
 
         //When
         BonusNumber savedBonus = bonusNumberRepository.save(bonusNumber);
 
         //Given
-        assertThat(savedBonus.getNumber()).isEqualTo("1");
+        assertThat(savedBonus.getNumber()).isEqualTo(1);
         assertThat(savedBonus.getId()).isEqualTo(purchaseId);
 
     }
