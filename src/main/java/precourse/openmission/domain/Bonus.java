@@ -43,4 +43,8 @@ public class Bonus {
         }
         return false;
     }
+
+    public int getNumber() {
+        return number;
+    }
 }
