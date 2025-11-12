@@ -16,7 +16,9 @@ import precourse.openmission.purchase.PurchaseRepository;
 import java.util.List;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
+import static org.springframework.test.web.servlet.result.StatusResultMatchersExtensionsKt.isEqualTo;
 
 public class WinningApiTest extends ApiTest {
     @Autowired
@@ -83,6 +85,30 @@ public class WinningApiTest extends ApiTest {
                 () -> assertThat(response.statusCode()).isEqualTo(200),
                 () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
                 () -> assertThat(jsonPath.getString("numbers")).isEqualTo("1,2,3,4,5,6")
+        );
+    }
+
+    @DisplayName("유효하지 않은 ID로 당첨 로또 저장하는 경우")
+    @Test
+    void saveByFakeId() {
+        //Given
+        String numbersJson = "{\"numbers\":[1,2,3,4,5,6]}";
+        String fakeId = "123";
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(numbersJson)
+                .post("/issue/winninglotto/" + fakeId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
     }
 }
