@@ -111,4 +111,25 @@ public class WinningApiTest extends ApiTest {
                         .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
     }
+
+    @DisplayName("유효하지 않은 ID로 당첨 로또 조회하는 경우")
+    @Test
+    void getByFakeId() {
+        //Given
+        String fakeId = "123";
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .get("/winninglotto/" + fakeId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
+        );
+    }
 }
