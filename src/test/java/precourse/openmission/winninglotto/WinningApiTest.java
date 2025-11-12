@@ -132,4 +132,27 @@ public class WinningApiTest extends ApiTest {
                         .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
     }
+
+    @DisplayName("6개가 아닌 당첨 로또 저장하는 경우")
+    @Test
+    void saveNotOnly6() {
+        //Given
+        String numbersJson = "{\"numbers\":[1,2,3,4,5,6,7]}";
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(numbersJson)
+                .post("/issue/winninglotto/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 로또 번호는 6개여야 합니다.")
+        );
+    }
 }
