@@ -13,6 +13,8 @@ import precourse.openmission.ApiTest;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 
+import java.util.List;
+
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
@@ -25,6 +27,8 @@ public class WinningApiTest extends ApiTest {
 
 
     Long purchaseId;
+    @Autowired
+    private WinningService winningService;
 
     @BeforeEach
     void setUp() {
@@ -48,6 +52,28 @@ public class WinningApiTest extends ApiTest {
                 .body(numbersJson)
                 .when()
                 .post("/issue/winninglotto/" + purchaseId)
+                .then()
+                .extract();
+
+        //Then
+        JsonPath jsonPath = response.body().jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(200),
+                () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
+                () -> assertThat(jsonPath.getString("numbers")).isEqualTo("1,2,3,4,5,6")
+        );
+    }
+
+    @DisplayName("당첨 번호 조회 API 정상 작동 확인")
+    @Test
+    void getWinningLotto() {
+        //Given
+        winningService.saveLotto(List.of(1, 2, 3, 4, 5, 6), purchaseId);
+
+        //When
+        ExtractableResponse<Response> response = RestAssured.given()
+                .when()
+                .get("/winninglotto/" + purchaseId)
                 .then()
                 .extract();
 
