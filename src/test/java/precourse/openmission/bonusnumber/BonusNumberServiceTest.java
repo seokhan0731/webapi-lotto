@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.transaction.annotation.Transactional;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 import precourse.openmission.winninglotto.WinningLotto;
@@ -81,5 +80,23 @@ public class BonusNumberServiceTest {
         assertThatThrownBy(() -> bonusNumberService.getBonus(fakeId))
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다.");
+    }
+
+    @DisplayName("유효하지 않은 범위의 보너스 번호 저장")
+    @Test
+    void invalidRangeBonus() {
+        //Then
+        assertThatThrownBy(() -> bonusNumberService.saveBonus(47, purchaseId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 보너스 번호는 1~45 사이의 숫자만 가집니다.");
+    }
+
+    @DisplayName("당첨 번호와 중복된 보너스 번호 저장")
+    @Test
+    void duplicateWithWinning() {
+        //Then
+        assertThatThrownBy(() -> bonusNumberService.saveBonus(1, purchaseId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 보너스 번호는 로또 번호와 중복되면 안됩니다.");
     }
 }
