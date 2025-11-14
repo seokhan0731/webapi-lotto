@@ -11,12 +11,24 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+/**
+ * 당첨 번호 저장, 조회를 수행하는 서비스 계층입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class WinningService {
     private final WinningRepository winningRepository;
     private final PurchaseRepository purchaseRepository;
 
+    /**
+     * 입력된 당첨 번호를 저장합니다.
+     * 도우미 메소드들을 통해, 구매 id 유효성 확인->로또 번호의 유효성 확인->문자열로 변환->저장순으로 수행됩니다.
+     *
+     * @param winningNumbers 입력받은 당첨 번호
+     * @param purchaseId     입력받은 구매 id
+     * @return 성공적으로 저장된 WinningLotto entity
+     * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 번호일때, 발생합니다.
+     */
     @Transactional
     public WinningLotto saveLotto(List<Integer> winningNumbers, Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
