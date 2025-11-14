@@ -34,8 +34,8 @@ public class BonusNumberServiceTest {
     @BeforeEach
     void setUp() {
         bonusNumberRepository.deleteAll();
-        purchaseRepository.deleteAll();
         winningRepository.deleteAll();
+        purchaseRepository.deleteAll();
 
         Purchase purchase = new Purchase(2000, 2);
         WinningLotto newLotto = new WinningLotto("1,2,3,4,5,6", purchase);
@@ -55,6 +55,22 @@ public class BonusNumberServiceTest {
         assertAll(
                 () -> assertThat(savedBonus.getNumber()).isEqualTo(8),
                 () -> assertThat(savedBonus.getId()).isEqualTo(purchaseId)
+        );
+    }
+
+    @DisplayName("db에 구매 id에 따른 보너스 번호 조회 지휘")
+    @Test
+    void getBonus() {
+        //Given
+        BonusNumber savedBonus = bonusNumberService.saveBonus(8, purchaseId);
+
+        //When
+        BonusNumber foundBonus = bonusNumberService.getBonus(purchaseId);
+
+        //Then
+        assertAll(
+                () -> assertThat(foundBonus.getNumber()).isEqualTo(8),
+                () -> assertThat(foundBonus.getId()).isEqualTo(purchaseId)
         );
     }
 }
