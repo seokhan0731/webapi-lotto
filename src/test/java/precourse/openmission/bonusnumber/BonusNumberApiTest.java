@@ -1,0 +1,79 @@
+package precourse.openmission.bonusnumber;
+
+import io.restassured.RestAssured;
+import io.restassured.path.json.JsonPath;
+import io.restassured.response.ExtractableResponse;
+import io.restassured.response.Response;
+import org.apache.http.HttpStatus;
+import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
+import org.junit.jupiter.api.Test;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
+import precourse.openmission.ApiTest;
+import precourse.openmission.purchase.Purchase;
+import precourse.openmission.purchase.PurchaseRepository;
+import precourse.openmission.purchase.PurchaseService;
+import precourse.openmission.winninglotto.WinningLotto;
+import precourse.openmission.winninglotto.WinningRepository;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.junit.jupiter.api.Assertions.assertAll;
+
+public class BonusNumberApiTest extends ApiTest {
+    @Autowired
+    BonusNumberRepository bonusNumberRepository;
+
+    @Autowired
+    PurchaseRepository purchaseRepository;
+
+    @Autowired
+    WinningRepository winningRepository;
+
+    @Autowired
+    PurchaseService purchaseService;
+
+    Long purchaseId;
+    Purchase savedPurchase;
+
+    @BeforeEach
+    void setUp() {
+        bonusNumberRepository.deleteAll();
+        winningRepository.deleteAll();
+        purchaseRepository.deleteAll();
+
+        Purchase purchase = new Purchase(2000, 2);
+        WinningLotto newLotto = new WinningLotto("1,2,3,4,5,6", purchase);
+        WinningLotto savedLotto = winningRepository.save(newLotto);
+
+        savedPurchase = purchaseRepository.save(purchase);
+        purchaseId = savedPurchase.getId();
+    }
+
+    @DisplayName("보너스 번호 저장 Api 정상 작동 확인")
+    @Test
+    void setBonusNumber() {
+        //Given
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(7);
+
+        //When
+        ExtractableResponse<Response> response = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .when()
+                .post("/issue/bonus/" + purchaseId)
+                .then()
+                .extract();
+
+        //Then
+        JsonPath jsonPath = response.body().jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.SC_OK),
+                () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
+                () -> assertThat(jsonPath.getInt("number")).isEqualTo(7),
+                () -> assertThat(jsonPath.getLong("purchaseId")).isEqualTo(purchaseId)
+        );
+
+    }
+}
