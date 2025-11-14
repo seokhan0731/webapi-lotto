@@ -5,6 +5,7 @@ import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
 import org.apache.http.HttpStatus;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -95,6 +96,56 @@ public class BonusNumberApiTest extends ApiTest {
                 () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
                 () -> assertThat(jsonPath.getInt("number")).isEqualTo(7),
                 () -> assertThat(jsonPath.getLong("purchaseId")).isEqualTo(purchaseId)
+        );
+    }
+
+    @DisplayName("유효하지 않은 id로 보너스 번호 저장")
+    @Test
+    void saveByFakeId() {
+        //Given
+        long fakeId = 123L;
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(7);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .post("/issue/bonus/" + fakeId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
+        );
+    }
+
+    @DisplayName("유효하지 않은 id로 보너스 번호 조회")
+    @Test
+    void getByFakeId() {
+        //Given
+        long fakeId = 123L;
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(7);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .get("/bonus/" + fakeId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
     }
 
