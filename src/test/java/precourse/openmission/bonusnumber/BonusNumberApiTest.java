@@ -30,11 +30,10 @@ public class BonusNumberApiTest extends ApiTest {
     @Autowired
     WinningRepository winningRepository;
 
-    @Autowired
-    PurchaseService purchaseService;
-
     Long purchaseId;
     Purchase savedPurchase;
+    @Autowired
+    private BonusNumberService bonusNumberService;
 
     @BeforeEach
     void setUp() {
@@ -74,6 +73,29 @@ public class BonusNumberApiTest extends ApiTest {
                 () -> assertThat(jsonPath.getInt("number")).isEqualTo(7),
                 () -> assertThat(jsonPath.getLong("purchaseId")).isEqualTo(purchaseId)
         );
-
     }
+
+    @DisplayName("보너스 번호 조회 api 정상 작동 확인")
+    @Test
+    void getBonus() {
+        //Given
+        bonusNumberService.saveBonus(7, purchaseId);
+
+        //When
+        ExtractableResponse<Response> response = RestAssured.given()
+                .when()
+                .get("/bonus/" + purchaseId)
+                .then()
+                .extract();
+
+        //Then
+        JsonPath jsonPath = response.body().jsonPath();
+        assertAll(
+                () -> assertThat(response.statusCode()).isEqualTo(HttpStatus.SC_OK),
+                () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
+                () -> assertThat(jsonPath.getInt("number")).isEqualTo(7),
+                () -> assertThat(jsonPath.getLong("purchaseId")).isEqualTo(purchaseId)
+        );
+    }
+
 }
