@@ -12,8 +12,10 @@ import precourse.openmission.winninglotto.WinningRepository;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.stream.Collectors;
 
+/**
+ * 보너스 번호 저장과 조회를 수행하는 서비스 계층입니다.
+ */
 @Service
 @RequiredArgsConstructor
 public class BonusNumberService {
@@ -21,6 +23,16 @@ public class BonusNumberService {
     private final PurchaseRepository purchaseRepository;
     private final WinningRepository winningRepository;
 
+    /**
+     * 입력된 보너스 번호를 저장합니다.
+     * 구매 id 유효성 검사->보너스 번호 유효성 확인->저장순으로 수행됩니다.
+     * 보너스 번호의 유효성 확인을 위해, winningRepository에서 구매 id에 대응하는 당첨 번호를 가져옵니다.
+     *
+     * @param number 입력받은 보너스 번호
+     * @param purchaseId 입력받은 구매 id
+     * @return 저장에 성공한 BonusNumber 객체
+     * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 보너스 번호일 때, 발생합니다.
+     */
     @Transactional
     public BonusNumber saveBonus(int number, Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);

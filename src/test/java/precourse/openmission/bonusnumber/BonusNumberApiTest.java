@@ -14,7 +14,6 @@ import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
-import precourse.openmission.purchase.PurchaseService;
 import precourse.openmission.winninglotto.WinningLotto;
 import precourse.openmission.winninglotto.WinningRepository;
 
