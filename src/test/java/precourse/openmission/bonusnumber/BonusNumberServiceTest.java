@@ -12,6 +12,7 @@ import precourse.openmission.winninglotto.WinningLotto;
 import precourse.openmission.winninglotto.WinningRepository;
 
 import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
@@ -58,19 +59,27 @@ public class BonusNumberServiceTest {
         );
     }
 
-    @DisplayName("db에 구매 id에 따른 보너스 번호 조회 지휘")
+    @DisplayName("유효하지 않은 id로 보너스 번호 저장")
     @Test
-    void getBonus() {
+    void saveByFakeId() {
         //Given
-        BonusNumber savedBonus = bonusNumberService.saveBonus(8, purchaseId);
-
-        //When
-        BonusNumber foundBonus = bonusNumberService.getBonus(purchaseId);
+        Long fakeId = 123L;
 
         //Then
-        assertAll(
-                () -> assertThat(foundBonus.getNumber()).isEqualTo(8),
-                () -> assertThat(foundBonus.getId()).isEqualTo(purchaseId)
-        );
+        assertThatThrownBy(() -> bonusNumberService.saveBonus(8, fakeId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다.");
+    }
+
+    @DisplayName("유효하지 않은 id로 보너스 번호 조회")
+    @Test
+    void getByFakeId() {
+        //Given
+        Long fakeId = 123L;
+
+        //Then
+        assertThatThrownBy(() -> bonusNumberService.getBonus(fakeId))
+                .isInstanceOf(IllegalArgumentException.class)
+                .hasMessage("[ERROR] 해당 구매 내역을 찾을 수 없습니다.");
     }
 }
