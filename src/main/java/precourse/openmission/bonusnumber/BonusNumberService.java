@@ -28,7 +28,7 @@ public class BonusNumberService {
      * 구매 id 유효성 검사->보너스 번호 유효성 확인->저장순으로 수행됩니다.
      * 보너스 번호의 유효성 확인을 위해, winningRepository에서 구매 id에 대응하는 당첨 번호를 가져옵니다.
      *
-     * @param number 입력받은 보너스 번호
+     * @param number     입력받은 보너스 번호
      * @param purchaseId 입력받은 구매 id
      * @return 저장에 성공한 BonusNumber 객체
      * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 보너스 번호일 때, 발생합니다.
@@ -36,6 +36,9 @@ public class BonusNumberService {
     @Transactional
     public BonusNumber saveBonus(int number, Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
+        if (!(winningRepository.existsById(purchaseId))) {
+            throw new IllegalStateException("[ERROR] 당첨 번호 입력이 선행되어야 합니다.");
+        }
 
         List<Integer> winningNumbers = stringToIntegerList(purchaseId);
 
