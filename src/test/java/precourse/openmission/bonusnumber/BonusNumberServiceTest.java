@@ -99,4 +99,17 @@ public class BonusNumberServiceTest {
                 .isInstanceOf(IllegalArgumentException.class)
                 .hasMessage("[ERROR] 보너스 번호는 로또 번호와 중복되면 안됩니다.");
     }
+
+    @DisplayName("당첨 번호가 없는 상태에서 보내스 번호 저장")
+    @Test
+    void nonExistentWinning() {
+        //Given
+        Purchase Purchase = new Purchase(2000, 2);
+        Long newPurchaseId = purchaseRepository.save(Purchase).getId();
+
+        //Then
+        assertThatThrownBy(() -> bonusNumberService.saveBonus(8, newPurchaseId))
+                .isInstanceOf(IllegalStateException.class)
+                .hasMessage("[ERROR] 당첨 번호 입력이 선행되어야 합니다.");
+    }
 }
