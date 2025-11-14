@@ -50,4 +50,9 @@ public class BonusNumberService {
                 .boxed()
                 .toList();
     }
+
+    public BonusNumber getBonus(Long purchaseId) {
+        Purchase validPurchase = validateId(purchaseId);
+        return bonusNumberRepository.findById(purchaseId).get();
+    }
 }
