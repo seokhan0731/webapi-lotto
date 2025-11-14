@@ -149,4 +149,52 @@ public class BonusNumberApiTest extends ApiTest {
         );
     }
 
+    @DisplayName("유효하지 않은 범위의 보너스 번호 저장")
+    @Test
+    void saveInvalidRange() {
+        //Given
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(47);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .post("/issue/bonus/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 보너스 번호는 1~45 사이의 숫자만 가집니다.")
+        );
+    }
+
+    @DisplayName("당첨 번호와 중복된 보너스 번호 저장")
+    @Test
+    void saveDuplicateNumber() {
+        //Given
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(3);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .post("/issue/bonus/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 보너스 번호는 로또 번호와 중복되면 안됩니다.")
+        );
+    }
+
 }
