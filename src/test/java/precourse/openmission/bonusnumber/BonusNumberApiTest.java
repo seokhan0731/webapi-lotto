@@ -196,4 +196,30 @@ public class BonusNumberApiTest extends ApiTest {
         );
     }
 
+    @DisplayName("당첨 번호가 없는 상태에서의 보너스 번호 저장")
+    @Test
+    void saveBonusExceptWinning() {
+        //Given
+        Purchase newPurchse = new Purchase(2000, 2);
+        long newPurchaseId = purchaseRepository.save(newPurchse).getId();
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(3);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .post("/issue/bonus/" + newPurchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(409),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 당첨 번호 입력이 선행되어야 합니다.")
+        );
+    }
+
 }
