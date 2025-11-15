@@ -13,7 +13,7 @@ public class BonusNumberController {
     /**
      * 구매 id를 통해 해당 회차의 보너스 번호를 입력받습니다.
      *
-     * @param id 구매 id
+     * @param id              구매 id
      * @param bonusRequestDTO 해당 구매 내역 회차의 보너스 번호
      * @return 상태코드 200, 유효성 검사를 통과한 보너스 번호
      * @throws IllegalArgumentException 유효하지 않은 보너스 번호와 id가 입력되었을 때, 발생합니다.
@@ -44,5 +44,10 @@ public class BonusNumberController {
     @ExceptionHandler
     public ResponseEntity<String> handleException(IllegalArgumentException e) {
         return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
+    }
+
+    @ExceptionHandler
+    public ResponseEntity<String> handleException(IllegalStateException e) {
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(e.getMessage());
     }
 }
