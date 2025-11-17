@@ -32,6 +32,7 @@ public class BonusNumberService {
      * @param purchaseId 입력받은 구매 id
      * @return 저장에 성공한 BonusNumber 객체
      * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 보너스 번호일 때, 발생합니다.
+     * @throws IllegalStateException 당첨 번호가 저장되지 않은 상태에서 보너스 번호 저장을 시도하는 경우 발생합니다.
      */
     @Transactional
     public BonusNumber saveBonus(int number, Long purchaseId) {

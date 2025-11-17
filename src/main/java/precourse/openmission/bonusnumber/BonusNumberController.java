@@ -17,6 +17,7 @@ public class BonusNumberController {
      * @param bonusRequestDTO 해당 구매 내역 회차의 보너스 번호
      * @return 상태코드 200, 유효성 검사를 통과한 보너스 번호
      * @throws IllegalArgumentException 유효하지 않은 보너스 번호와 id가 입력되었을 때, 발생합니다.
+     * @throws IllegalStateException 당첨 번호가 저장되지 않은 상태에서 보너스 번호 저장 요청시, 발생합니다.
      */
     @PostMapping("/issue/bonus/{id}")
     public BonusResponseDTO saveBonus(@PathVariable Long id, @RequestBody BonusRequestDTO bonusRequestDTO) {
