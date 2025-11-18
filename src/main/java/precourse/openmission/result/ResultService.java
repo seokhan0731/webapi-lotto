@@ -37,6 +37,10 @@ public class ResultService {
     }
 
     private List<Lotto> toMyLottoPojo(Long validId) {
+        if (myLottoRepository.findByPurchaseId(validId).isEmpty()) {
+            throw new IllegalStateException("[ERROR] 로또 발행이 되어 있지 않습니다.");
+        }
+
         List<MyLotto> lottosEntity = myLottoRepository.findByPurchaseId(validId);
         return lottosEntity.stream()
                 .map(SingleLotto::toLottoPojo)
@@ -44,11 +48,17 @@ public class ResultService {
     }
 
     private Lotto toWinningPojo(Long validId) {
+        if (!(winningRepository.existsById(validId))) {
+            throw new IllegalStateException("[ERROR] 당첨 로또 발행이 되어 있지 않습니다.");
+        }
         WinningLotto winningEntity = winningRepository.findByPurchaseId(validId);
         return winningEntity.toLottoPojo();
     }
 
     private Bonus toBonusPojo(Long validId, Lotto winnigLotto) {
+        if (!(bonusRepository.existsById(validId))) {
+            throw new IllegalStateException("[ERROR] 보너스 번호가 입력되어 있지 않습니다.");
+        }
         BonusNumber bonusEntity = bonusRepository.findByPurchaseId(validId);
         return new Bonus(bonusEntity.getNumber(), winnigLotto);
     }
