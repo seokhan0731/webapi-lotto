@@ -24,6 +24,17 @@ public class Lottos {
     }
 
     /**
+     * 최종 결과를 계산하기 위해 추가된 메소드입니다.
+     * db에서 로또들을 불러와서, 해당 클래스에서 총괄 관리하게 합니다.
+     *
+     * @param lottos db에서 불러온 이미 발행된 상태의 로또들
+     */
+    public Lottos(List<Lotto> lottos) {
+        this.lottos = lottos;
+        this.quantity = lottos.size();
+    }
+
+    /**
      * 각 로또들을 생성합니다.
      * 유효한 로또 번호를 생성하는 생성기를 통해, 각 로또들을 생성합니다.
      *
