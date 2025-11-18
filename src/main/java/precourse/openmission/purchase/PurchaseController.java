@@ -30,17 +30,6 @@ public class PurchaseController {
     }
 
     /**
-     * PurchaseService에서 발생한 에러 코드를, HTTP Status 400으로 변환합니다.
-     *
-     * @param e PurchaseService에서 발생한 에러 코드
-     * @return HTTP Status 400과 해당 에러 메시지
-     */
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
-
-    /**
      * 구매 내역 조회 요청을 받아 구매 내역을 반환합니다.
      *
      * @return HTTP StatusCode 200. Purchase 객체(구매 금액, 수량)의 리스트

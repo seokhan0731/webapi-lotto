@@ -31,6 +31,13 @@ public class MyLottoController {
         return myLottoToDTO(lottos);
     }
 
+    /**
+     * 발행된 로또 번호들을 조회합니다.
+     *
+     * @param id 조회할 구매 내역
+     * @return 해당 회차의 구매 id와 발행된 번호들이 포함된 DTO
+     * @throws IllegalArgumentException 존재하지 않는 구매 id의 경우, 상태코드 400을 반환합니다.
+     */
     @GetMapping(value = "/mylotto/{id}")
     public List<MyLottoResponseDTO> getMyLotto(@PathVariable Long id) {
         List<MyLotto> lottos = myLottoService.getLottos(id);
@@ -44,8 +51,4 @@ public class MyLottoController {
                 .toList();
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
 }

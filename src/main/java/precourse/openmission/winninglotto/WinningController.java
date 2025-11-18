@@ -6,7 +6,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 /**
- *당첨 번호를 관리하는 API 컨트롤러 계층입니다.
+ * 당첨 번호를 관리하는 API 컨트롤러 계층입니다.
  * 입력된 당첨 번호 저장 및 당첨 번호를 조회합니다.
  */
 @RestController
@@ -17,7 +17,7 @@ public class WinningController {
     /**
      * 구매 id를 통해 해당 회차의 당첨 번호를 입력받습니다.
      *
-     * @param id 구매 id
+     * @param id                구매 id
      * @param winningRequestDTO 해당 구매 내역 회차의 당첨 번호
      * @return 상태코드 200. 유효성을 통과한 당첨 번호
      * @throws IllegalArgumentException 유효하지 않은 당첨번호와 id가 입력되었을 때, 상태코드 400을 반환합니다.
@@ -45,8 +45,4 @@ public class WinningController {
         return lottoToDTO(savedLotto);
     }
 
-    @ExceptionHandler(IllegalArgumentException.class)
-    public ResponseEntity<String> handleException(IllegalArgumentException e) {
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(e.getMessage());
-    }
 }
