@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -98,4 +99,26 @@ public class ResultApiTest extends ApiTest {
                         entry("Fifth", 1))
         );
     }
+
+    @DisplayName("유효하지 않은 id로 결과 조회")
+    @Test
+    void getByFakeId() {
+        //Given
+        long fakeId = 123L;
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .get("/result/" + fakeId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
+        );
+    }
+
 }
