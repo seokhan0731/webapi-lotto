@@ -1,10 +1,11 @@
 package precourse.openmission.bonusnumber;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+/**
+ * 보너스 번호 저장과 조회를 책임지는 api 컨트롤러 계층입니다.
+ */
 @RestController
 @RequiredArgsConstructor
 public class BonusNumberController {

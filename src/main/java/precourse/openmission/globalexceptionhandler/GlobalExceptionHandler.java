@@ -5,6 +5,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+/**
+ * Controller 계층에서의 예외 발생을 가로채서 해결하는 클래스입니다.
+ */
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
