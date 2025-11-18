@@ -5,7 +5,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
-import precourse.openmission.bonusnumber.BonusNumber;
 import precourse.openmission.bonusnumber.BonusNumberRepository;
 import precourse.openmission.bonusnumber.BonusNumberService;
 import precourse.openmission.mylotto.MyLotto;
@@ -16,8 +15,11 @@ import precourse.openmission.winninglotto.WinningLotto;
 import precourse.openmission.winninglotto.WinningRepository;
 
 import java.util.List;
+import java.util.Map;
 
-import static org.assertj.core.api.AssertionsForClassTypes.assertThat;
+import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.entry;
+import static org.junit.jupiter.api.Assertions.assertAll;
 
 @SpringBootTest
 public class ResultServiceTest {
@@ -73,11 +75,26 @@ public class ResultServiceTest {
     @DisplayName("수익률 계산")
     @Test
     void calculateProfitRate() {
-        //WHen
+        //When
         double profitRate = resultService.getProfitRate(purchaseId);
 
         //Then
         assertThat(profitRate).isEqualTo(62.5);
+    }
+
+    @DisplayName("당첨 결과 계산")
+    @Test
+    void calculateRankResult() {
+        //When
+        Map<String, Integer> ranks = resultService.getRankResult(purchaseId);
+
+        //Given
+        assertThat(ranks).containsExactly(
+                entry("First", 0),
+                entry("Second", 0),
+                entry("Third", 0),
+                entry("Fourth", 0),
+                entry("Fifth", 1));
     }
 
 }
