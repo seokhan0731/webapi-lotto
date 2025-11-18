@@ -32,7 +32,7 @@ public class BonusNumberService {
      * @param purchaseId 입력받은 구매 id
      * @return 저장에 성공한 BonusNumber 객체
      * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 보너스 번호일 때, 발생합니다.
-     * @throws IllegalStateException 당첨 번호가 저장되지 않은 상태에서 보너스 번호 저장을 시도하는 경우 발생합니다.
+     * @throws IllegalStateException    당첨 번호가 저장되지 않은 상태에서 보너스 번호 저장을 시도하는 경우 발생합니다.
      */
     @Transactional
     public BonusNumber saveBonus(int number, Long purchaseId) {
@@ -41,9 +41,9 @@ public class BonusNumberService {
             throw new IllegalStateException("[ERROR] 당첨 번호 입력이 선행되어야 합니다.");
         }
 
-        List<Integer> winningNumbers = stringToIntegerList(purchaseId);
+        WinningLotto savedLotto = winningRepository.findByPurchaseId(purchaseId);
+        Lotto winningLotto = savedLotto.toLottoPojo();
 
-        Lotto winningLotto = new Lotto(winningNumbers);
         Bonus newBonus = new Bonus(number, winningLotto);
 
         BonusNumber bonusEntity = new BonusNumber(newBonus.getNumber(), foundPurchase);
@@ -55,20 +55,8 @@ public class BonusNumberService {
                 new IllegalArgumentException("[ERROR] 해당 구매 내역을 찾을 수 없습니다."));
     }
 
-    private List<Integer> stringToIntegerList(Long validId) {
-        WinningLotto savedLotto = winningRepository.findByPurchaseId(validId);
-
-        String numbers = savedLotto.getNumbers();
-        List<String> stringArray = Arrays.asList(numbers.split(","));
-
-        return stringArray.stream()
-                .mapToInt(Integer::parseInt)
-                .boxed()
-                .toList();
-    }
-
     public BonusNumber getBonus(Long purchaseId) {
         Purchase validPurchase = validateId(purchaseId);
-        return bonusNumberRepository.findById(purchaseId).get();
+        return bonusNumberRepository.findByPurchaseId(purchaseId);
     }
 }
