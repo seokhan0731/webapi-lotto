@@ -27,16 +27,7 @@ public class ResultService {
     @Transactional
     public double getProfitRate(Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
-
-        List<Lotto> myLottoPojo = toMyLottoPojo(purchaseId);
-        Lotto winningLottoPojo = toWinningPojo(purchaseId);
-        Bonus bonusPojo = toBonusPojo(purchaseId, winningLottoPojo);
-
-        Lottos lottoCollection = new Lottos(myLottoPojo);
-
-        Result lottoResult = new Result(Rank.valueOf(lottoCollection.matchNumbersAll(winningLottoPojo),
-                lottoCollection.matchBonusAll(bonusPojo)));
-
+        Result lottoResult = createResultPojo(foundPurchase.getId());
         return lottoResult.profitRate();
     }
 
@@ -64,22 +55,13 @@ public class ResultService {
 
     public Map<String, Integer> getRankResult(Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
-        List<Lotto> myLottoPojo = toMyLottoPojo(purchaseId);
-        Lotto winningLottoPojo = toWinningPojo(purchaseId);
-        Bonus bonusPojo = toBonusPojo(purchaseId, winningLottoPojo);
 
-        Lottos lottoCollection = new Lottos(myLottoPojo);
+        Result lottoResult = createResultPojo(foundPurchase.getId());
 
-        Result lottoResult = new Result(Rank.valueOf(lottoCollection.matchNumbersAll(winningLottoPojo),
-                lottoCollection.matchBonusAll(bonusPojo)));
-
-        List<ResultDTO> resultWithPrize = lottoResult.getResults();
-        List<ResultDTO> sortedResult = resultWithPrize.stream()
-                .sorted(Comparator.comparing(ResultDTO::prize).reversed())
-                .toList();
+        List<ResultDTO> sortedResultDTO = sortResultDTO(lottoResult);
 
         Map<String, Integer> rankMap = new LinkedHashMap<>();
-        sortedResult.forEach(resultDTO -> convertPrizeToRank(rankMap, resultDTO));
+        sortedResultDTO.forEach(resultDTO -> convertPrizeToRank(rankMap, resultDTO));
 
         return rankMap;
     }
@@ -91,5 +73,23 @@ public class ResultService {
                 .orElse(Rank.Other);
 
         rankMap.put(matchedRank.name(), singleResultDTO.number());
+    }
+
+    private Result createResultPojo(Long validId) {
+        List<Lotto> myLottoPojo = toMyLottoPojo(validId);
+        Lotto winningLottoPojo = toWinningPojo(validId);
+        Bonus bonusPojo = toBonusPojo(validId, winningLottoPojo);
+
+        Lottos lottoCollection = new Lottos(myLottoPojo);
+
+        return new Result(Rank.valueOf(lottoCollection.matchNumbersAll(winningLottoPojo),
+                lottoCollection.matchBonusAll(bonusPojo)));
+    }
+
+    private List<ResultDTO> sortResultDTO(Result lottoResult) {
+        return lottoResult.getResults()
+                .stream()
+                .sorted(Comparator.comparing(ResultDTO::prize).reversed())
+                .toList();
     }
 }
