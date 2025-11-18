@@ -10,7 +10,6 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import precourse.openmission.ApiTest;
-import precourse.openmission.bonusnumber.BonusNumber;
 import precourse.openmission.bonusnumber.BonusNumberRepository;
 import precourse.openmission.bonusnumber.BonusNumberService;
 import precourse.openmission.mylotto.MyLotto;
@@ -89,7 +88,7 @@ public class ResultApiTest extends ApiTest {
         assertAll(
                 () -> assertThat(response.statusCode()).isEqualTo(200),
                 () -> assertThat(response.header("Content-Type")).isEqualTo("application/json"),
-                () -> assertThat(jsonPath.getLong("purchaseId")).isEqualTo(1),
+                () -> assertThat(jsonPath.getLong("purchaseId")).isEqualTo(purchaseId),
                 () -> assertThat(jsonPath.getDouble("profitRate")).isEqualTo(62.5),
                 () -> assertThat(jsonPath.getMap("rankCounts")).containsExactly(
                         entry("First", 0),

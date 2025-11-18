@@ -4,11 +4,13 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
+import precourse.openmission.bonusnumber.BonusRequestDTO;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -109,5 +111,6 @@ public class PurchaseApiTest extends ApiTest {
                 () -> assertThat(jsonPath.getInt("[1].quantity")).isEqualTo(3)
         );
     }
+
 
 }

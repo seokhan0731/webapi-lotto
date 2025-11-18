@@ -10,4 +10,6 @@ import java.util.List;
  */
 public interface MyLottoRepository extends JpaRepository<MyLotto, Long> {
     List<MyLotto> findByPurchaseId(Long purchaseId);
+
+    boolean existsByPurchaseId(Long purchaseId);
 }

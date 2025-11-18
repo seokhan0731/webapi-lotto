@@ -4,6 +4,7 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
+import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -24,6 +25,9 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class MyLottoApiTest extends ApiTest {
     @Autowired
     MyLottoRepository myLottoRepository;
+
+    @Autowired
+    MyLottoService myLottoService;
 
     @Autowired
     PurchaseRepository purchaseRepository;
@@ -123,9 +127,34 @@ public class MyLottoApiTest extends ApiTest {
         //Then
         assertAll(
                 () -> assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
-                () -> assertThat(errorResponseToPost.body().asString()).isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다."),
+                () -> assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다."),
                 () -> assertThat(errorResponseToGet.statusCode()).isEqualTo(400),
-                () -> assertThat(errorResponseToGet.body().asString()).isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
+                () -> assertThat(errorResponseToGet.body().asString())
+                        .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
         );
     }
+
+    @DisplayName("이미 로또가 발행된 상태에서 수정 요청")
+    @Test
+    void tryModifyLotto() {
+        myLottoService.saveLottos(purchaseId);
+
+        //When
+        Response response = RestAssured.given()
+                .when()
+                .post("/issue/mylotto/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        JsonPath jsonPath = response.jsonPath();
+        assertAll(
+                () -> Assertions.assertThat(response.statusCode()).isEqualTo(409),
+                () -> Assertions.assertThat(response.body().asString())
+                        .isEqualTo("[ERROR] 이미 로또가 발행되어 있습니다.")
+        );
+    }
+
 }

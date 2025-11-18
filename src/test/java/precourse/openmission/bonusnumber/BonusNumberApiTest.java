@@ -222,4 +222,29 @@ public class BonusNumberApiTest extends ApiTest {
         );
     }
 
+    @DisplayName("이미 보너스 번호가 존재하는 상태에서 수정 요청")
+    @Test
+    void tryModifyBonus() {
+        //Given
+        bonusNumberService.saveBonus(7, purchaseId);
+        BonusRequestDTO requestDTO = new BonusRequestDTO();
+        requestDTO.setNumber(3);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .body(requestDTO)
+                .post("/issue/bonus/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(409),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 이미 보너스 번호가 등록되어 있습니다.")
+        );
+    }
+
 }
