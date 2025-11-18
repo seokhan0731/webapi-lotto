@@ -14,9 +14,7 @@ import precourse.openmission.singlelottosuperentity.SingleLotto;
 import precourse.openmission.winninglotto.WinningLotto;
 import precourse.openmission.winninglotto.WinningRepository;
 
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
+import java.util.*;
 
 @Service
 @RequiredArgsConstructor
@@ -64,4 +62,34 @@ public class ResultService {
         return new Bonus(bonusEntity.getNumber(), winnigLotto);
     }
 
+    public Map<String, Integer> getRankResult(Long purchaseId) {
+        Purchase foundPurchase = validateId(purchaseId);
+        List<Lotto> myLottoPojo = toMyLottoPojo(purchaseId);
+        Lotto winningLottoPojo = toWinningPojo(purchaseId);
+        Bonus bonusPojo = toBonusPojo(purchaseId, winningLottoPojo);
+
+        Lottos lottoCollection = new Lottos(myLottoPojo);
+
+        Result lottoResult = new Result(Rank.valueOf(lottoCollection.matchNumbersAll(winningLottoPojo),
+                lottoCollection.matchBonusAll(bonusPojo)));
+
+        List<ResultDTO> resultWithPrize = lottoResult.getResults();
+        List<ResultDTO> sortedResult = resultWithPrize.stream()
+                .sorted(Comparator.comparing(ResultDTO::prize).reversed())
+                .toList();
+
+        Map<String, Integer> rankMap = new LinkedHashMap<>();
+        sortedResult.forEach(resultDTO -> convertPrizeToRank(rankMap, resultDTO));
+
+        return rankMap;
+    }
+
+    private void convertPrizeToRank(Map<String, Integer> rankMap, ResultDTO singleResultDTO) {
+        Rank matchedRank = Arrays.stream(Rank.values())
+                .filter(r -> r.getPrize() == singleResultDTO.prize())
+                .findFirst()
+                .orElse(Rank.Other);
+
+        rankMap.put(matchedRank.name(), singleResultDTO.number());
+    }
 }
