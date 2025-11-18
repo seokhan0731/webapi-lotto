@@ -33,10 +33,14 @@ public class BonusNumberService {
      * @return 저장에 성공한 BonusNumber 객체
      * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 보너스 번호일 때, 발생합니다.
      * @throws IllegalStateException    당첨 번호가 저장되지 않은 상태에서 보너스 번호 저장을 시도하는 경우 발생합니다.
+     *                                  이미 보너스 번호가 등록되어 있는 경우 발생합니다.
      */
     @Transactional
     public BonusNumber saveBonus(int number, Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
+        if(bonusNumberRepository.existsById(purchaseId)){
+            throw new IllegalStateException("[ERROR] 이미 보너스 번호가 등록되어 있습니다.");
+        }
         if (!(winningRepository.existsById(purchaseId))) {
             throw new IllegalStateException("[ERROR] 당첨 번호 입력이 선행되어야 합니다.");
         }

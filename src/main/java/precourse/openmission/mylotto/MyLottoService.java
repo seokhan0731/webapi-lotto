@@ -29,9 +29,13 @@ public class MyLottoService {
      * @param purchaseId 유효성 검증이 필요한 구매 id
      * @return 저장된 MyLotto Entity의 리스트
      * @throws IllegalArgumentException 유효하지 않은 구매 id
+     * @throws IllegalStateException 이미 로또가 발행되어 있다면 발생합니다.
      */
     public List<MyLotto> saveLottos(Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
+        if (lottoRepository.existsByPurchaseId(purchaseId)) {
+            throw new IllegalStateException("[ERROR] 이미 로또가 발행되어 있습니다.");
+        }
         List<MyLotto> lottosToSave = createListOfLottoEntities(foundPurchase);
         return lottoRepository.saveAll(lottosToSave);
     }

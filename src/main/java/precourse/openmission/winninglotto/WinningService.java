@@ -28,11 +28,15 @@ public class WinningService {
      * @param purchaseId     입력받은 구매 id
      * @return 성공적으로 저장된 WinningLotto entity
      * @throws IllegalArgumentException 유효하지 않은 구매 id와 유효하지 않은 번호일때, 발생합니다.
+     * @throws IllegalStateException 이미 당첨 로또가 존재한다면, 발생합니다.
      */
     @Transactional
     public WinningLotto saveLotto(List<Integer> winningNumbers, Long purchaseId) {
         Purchase foundPurchase = validateId(purchaseId);
 
+        if (winningRepository.existsById(purchaseId)) {
+            throw new IllegalStateException("[ERROR] 이미 당첨 로또가 발행되어 있습니다.");
+        }
         Lotto winningLotto = new Lotto(winningNumbers);
 
         String numbersAsString = setToString(winningLotto);
