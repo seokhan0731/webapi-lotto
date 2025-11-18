@@ -9,8 +9,8 @@ import lombok.Getter;
  */
 @Getter
 public class WinningResponseDTO {
-    private String numbers;
     private Long purchaseId;
+    private String numbers;
 
     public WinningResponseDTO(WinningLotto winningLotto) {
         this.numbers = winningLotto.getNumbers();

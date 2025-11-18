@@ -11,8 +11,9 @@ import lombok.Getter;
 @Getter
 public class MyLottoResponseDTO {
     private Long lottoId;
-    private String numbers;
     private Long purchaseId;
+    private String numbers;
+
 
     public MyLottoResponseDTO(MyLotto myLotto) {
         this.lottoId = myLotto.getId();
