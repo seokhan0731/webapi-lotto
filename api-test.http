@@ -1,0 +1,42 @@
+### 1. 로또 구매
+POST http://localhost:8080/purchase
+Content-Type: application/json
+Accept: application/json
+
+{
+  "money": 8000
+}
+
+### 2. 로또 발행
+POST http://localhost:8080/issue/mylotto/1
+Accept: application/json
+
+### 3. 당첨 번호 입력
+POST http://localhost:8080/issue/winninglotto/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "numbers": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6
+  ]
+}
+
+### 4. 보너스 번호 입력
+POST http://localhost:8080/issue/bonus/1
+Content-Type: application/json
+Accept: application/json
+
+{
+  "number": 7
+}
+
+### 5. 결과 조회
+GET http://localhost:8080/result/1
+Accept: application/json
+
