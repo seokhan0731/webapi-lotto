@@ -10,6 +10,7 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import precourse.openmission.ApiTest;
+import precourse.openmission.bonusnumber.BonusNumber;
 import precourse.openmission.bonusnumber.BonusNumberRepository;
 import precourse.openmission.bonusnumber.BonusNumberService;
 import precourse.openmission.mylotto.MyLotto;
@@ -27,8 +28,6 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 
 public class ResultApiTest extends ApiTest {
     @Autowired
-    ResultService resultService;
-    @Autowired
     PurchaseRepository purchaseRepository;
     @Autowired
     WinningRepository winningRepository;
@@ -36,6 +35,7 @@ public class ResultApiTest extends ApiTest {
     BonusNumberRepository bonusRepository;
 
     @Autowired
+
     BonusNumberService bonusNumberService;
     @Autowired
     MyLottoRepository myLottoRepository;
@@ -118,6 +118,84 @@ public class ResultApiTest extends ApiTest {
                 () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(400),
                 () -> Assertions.assertThat(errorResponseToPost.body().asString())
                         .isEqualTo("[ERROR] 해당 구매 내역을 찾을 수 없습니다.")
+        );
+    }
+
+    @DisplayName("로또가 발행되지 않은 경우, 예외 처리")
+    @Test
+    void getResultExceptMyLotto() {
+        //Given
+        Purchase purchase = new Purchase(2000, 2);
+        WinningLotto winningLotto = new WinningLotto("1,2,3,4,5,6", purchase);
+        winningRepository.save(winningLotto);
+        purchaseId = winningLotto.getId();
+        bonusNumberService.saveBonus(7, purchaseId);
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .get("/result/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(409),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 로또 발행이 되어 있지 않습니다.")
+        );
+    }
+
+    @DisplayName("당첨 로또가 발행되지 않은 경우, 예외 처리")
+    @Test
+    void getResultExceptWinningLotto() {
+        //Given
+        Purchase purchase = new Purchase(2000, 2);
+        purchaseRepository.save(purchase);
+        MyLotto lotto1 = new MyLotto("8,21,23,41,42,45", purchase);
+        MyLotto lotto2 = new MyLotto("3,5,11,16,32,38", purchase);
+        myLottoRepository.saveAll(List.of(lotto1, lotto2));
+
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .get("/result/" + lotto1.getPurchase().getId())
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(409),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 당첨 로또 발행이 되어 있지 않습니다.")
+        );
+    }
+
+    @DisplayName("보너스 번호가 없는 경우, 예외 처리")
+    @Test
+    void getResultExceptBonus() {
+        //Given
+        Purchase purchase = new Purchase(2000, 2);
+        MyLotto lotto1 = new MyLotto("8,21,23,41,42,45", purchase);
+        MyLotto lotto2 = new MyLotto("3,5,11,16,32,38", purchase);
+        WinningLotto winningLotto = new WinningLotto("1,2,3,4,5,6", purchase);
+        winningRepository.save(winningLotto);
+        myLottoRepository.saveAll(List.of(lotto1, lotto2));
+        purchaseId = winningLotto.getId();
+
+        //When
+        Response errorResponseToPost = RestAssured.given()
+                .get("/result/" + purchaseId)
+                .then()
+                .extract()
+                .response();
+
+        //Then
+        assertAll(
+                () -> Assertions.assertThat(errorResponseToPost.statusCode()).isEqualTo(409),
+                () -> Assertions.assertThat(errorResponseToPost.body().asString())
+                        .isEqualTo("[ERROR] 보너스 번호가 입력되어 있지 않습니다.")
         );
     }
 
