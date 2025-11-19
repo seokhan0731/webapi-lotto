@@ -39,4 +39,4 @@ jobs:
           SPRING_DATASOURCE_password: root
           SPRING_DATASOURCE_DRIVER_CLASS_NAME: com.mysql.cj.jdbc.Driver
           SPRING_JPA_HIBERNATE_DDL_AUTO: create-drop
-        run: ./gradlew clean test
+        run: ./gradlew clean test -i
