@@ -1,3 +1,5 @@
+[![ci.yml](https://github.com/seokhan0731/webapi-lotto/actions/workflows/ci.yml/badge.svg)](https://github.com/seokhan0731/webapi-lotto/actions/workflows/ci.yml)
+
 # java-webapi-lotto
 ---
 
