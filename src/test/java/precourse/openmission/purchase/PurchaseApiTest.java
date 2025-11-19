@@ -4,13 +4,15 @@ import io.restassured.RestAssured;
 import io.restassured.path.json.JsonPath;
 import io.restassured.response.ExtractableResponse;
 import io.restassured.response.Response;
-import org.assertj.core.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
-import precourse.openmission.bonusnumber.BonusRequestDTO;
+import precourse.openmission.bonusnumber.BonusNumberRepository;
+import precourse.openmission.mylotto.MyLottoRepository;
+import precourse.openmission.winninglotto.WinningRepository;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertAll;
@@ -18,6 +20,22 @@ import static org.junit.jupiter.api.Assertions.assertAll;
 public class PurchaseApiTest extends ApiTest {
     @Autowired
     PurchaseRepository purchaseRepository;
+
+    @Autowired
+    MyLottoRepository myLottoRepository;
+    @Autowired
+    WinningRepository winningRepository;
+    @Autowired
+    BonusNumberRepository bonusNumberRepository;
+
+    @BeforeEach
+    void setUp() {
+        myLottoRepository.deleteAll();
+        winningRepository.deleteAll();
+        bonusNumberRepository.deleteAll();
+        purchaseRepository.deleteAll();
+    }
+
 
     @DisplayName("구매 API 정상 작동 확인")
     @Test

@@ -5,6 +5,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import precourse.openmission.bonusnumber.BonusNumberRepository;
+import precourse.openmission.mylotto.MyLottoRepository;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 
@@ -26,6 +28,12 @@ public class WinningServiceTest {
     @Autowired
     PurchaseRepository purchaseRepository;
 
+    @Autowired
+    MyLottoRepository myLottoRepository;
+
+    @Autowired
+    BonusNumberRepository bonusNumberRepository;
+
     Purchase savedPurchase;
     Long purchaseId;
     List<Integer> winningNumbers = List.of(1, 2, 3, 4, 5, 6);
@@ -33,7 +41,9 @@ public class WinningServiceTest {
 
     @BeforeEach
     void setUp() {
+        myLottoRepository.deleteAll();
         winningRepository.deleteAll();
+        bonusNumberRepository.deleteAll();
         purchaseRepository.deleteAll();
 
         Purchase purchase = new Purchase(2000, 2);

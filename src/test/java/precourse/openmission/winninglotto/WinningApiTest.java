@@ -11,6 +11,8 @@ import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import precourse.openmission.ApiTest;
+import precourse.openmission.bonusnumber.BonusNumberRepository;
+import precourse.openmission.mylotto.MyLottoRepository;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 
@@ -28,6 +30,12 @@ public class WinningApiTest extends ApiTest {
     @Autowired
     PurchaseRepository purchaseRepository;
 
+    @Autowired
+    MyLottoRepository myLottoRepository;
+
+    @Autowired
+    BonusNumberRepository bonusNumberRepository;
+
 
     Long purchaseId;
     @Autowired
@@ -35,7 +43,9 @@ public class WinningApiTest extends ApiTest {
 
     @BeforeEach
     void setUp() {
+        myLottoRepository.deleteAll();
         winningRepository.deleteAll();
+        bonusNumberRepository.deleteAll();
         purchaseRepository.deleteAll();
 
         Purchase purchase = new Purchase(2000, 2);

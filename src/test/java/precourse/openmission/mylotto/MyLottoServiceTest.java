@@ -8,9 +8,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.context.TestConfiguration;
 import org.springframework.context.annotation.Bean;
+import precourse.openmission.bonusnumber.BonusNumberRepository;
 import precourse.openmission.domain.NumberGenerator;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
+import precourse.openmission.winninglotto.WinningRepository;
 
 import java.util.List;
 
@@ -28,6 +30,12 @@ public class MyLottoServiceTest {
 
     @Autowired
     PurchaseRepository purchaseRepository;
+
+    @Autowired
+    WinningRepository winningRepository;
+
+    @Autowired
+    BonusNumberRepository bonusNumberRepository;
 
     @TestConfiguration
     static class TestConfig {
@@ -47,6 +55,8 @@ public class MyLottoServiceTest {
     @BeforeEach
     void setUp() {
         myLottoRepository.deleteAll();
+        winningRepository.deleteAll();
+        bonusNumberRepository.deleteAll();
         purchaseRepository.deleteAll();
 
         Purchase purchase = new Purchase(2000, 2);
