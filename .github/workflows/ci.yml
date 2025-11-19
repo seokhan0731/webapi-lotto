@@ -8,6 +8,10 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      MYSQL_URL: ${{secrets.MYSQL_URL}}
+      MYSQL_ID: ${{secrets.MYSQL_ID}}
+      MYSQL_PASSWORD: ${{secrets.MYSQL_PASSWORD}}
 
     steps:
       - name: Checkout Code
