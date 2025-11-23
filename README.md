@@ -68,6 +68,23 @@
 
 ---
 
+# #3. API 명세표
+
+| 기능 | Method | URI | Request Body (예시) |
+| :--- | :---: | :--- | :--- |
+| **로또 구매** | `POST` | `/purchase` | `{"money": 8000}` |
+| **구매 내역 조회** | `GET` | `/purchase/history` | X |
+| **로또 발행** | `POST` | `/issue/mylotto/{purchaseId}` | X |
+| **발행된 로또 번호 조회** | `GET` | `/mylotto/{purchaseId}` | X |
+| **당첨 번호 입력** | `POST` | `/issue/winninglotto/{purchaseId}` | `{"numbers": [1, 2, 3, 4, 5, 6]}` |
+| **당첨 번호 조회** | `GET` | `/winninglotto/{purchaseId}` | X |
+| **보너스 번호 입력** | `POST` | `/issue/bonus/{purchaseId}` | `{"number": 7}` |
+| **보너스 번호 조회** | `POST` | `/bonus/{purchaseId}` | X |
+| **결과 조회** | `GET` | `/result/{purchaseId}` | X |
+
+
+---
+
 # # 상세 문서
 
 이 프로젝트의 아키텍처, 고민 과정, 회고는 아래 문서에서 확인할 수 있습니다.
