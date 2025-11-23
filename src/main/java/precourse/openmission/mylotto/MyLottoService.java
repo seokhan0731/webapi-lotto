@@ -2,8 +2,8 @@ package precourse.openmission.mylotto;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import precourse.openmission.domain.Lottos;
-import precourse.openmission.domain.NumberGenerator;
+import precourse.openmission.pojo.Lottos;
+import precourse.openmission.pojo.NumberGenerator;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 

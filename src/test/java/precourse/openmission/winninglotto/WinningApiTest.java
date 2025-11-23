@@ -15,6 +15,7 @@ import precourse.openmission.bonusnumber.BonusNumberRepository;
 import precourse.openmission.mylotto.MyLottoRepository;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
+import precourse.openmission.winninglotto.dto.WinningRequestDTO;
 
 import java.util.List;
 

@@ -3,7 +3,7 @@ package precourse.openmission.winninglotto;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import precourse.openmission.domain.Lotto;
+import precourse.openmission.pojo.Lotto;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 

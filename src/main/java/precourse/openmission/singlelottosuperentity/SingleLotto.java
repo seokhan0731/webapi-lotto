@@ -2,7 +2,7 @@ package precourse.openmission.singlelottosuperentity;
 
 import jakarta.persistence.MappedSuperclass;
 import lombok.Getter;
-import precourse.openmission.domain.Lotto;
+import precourse.openmission.pojo.Lotto;
 
 import java.util.Arrays;
 import java.util.List;

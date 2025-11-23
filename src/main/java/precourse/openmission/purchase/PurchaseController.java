@@ -1,12 +1,11 @@
 package precourse.openmission.purchase;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import precourse.openmission.purchase.dto.PurchaseRequestDTO;
+import precourse.openmission.purchase.dto.PurchaseResponseDTO;
 
-import java.awt.*;
 import java.util.List;
 
 /**

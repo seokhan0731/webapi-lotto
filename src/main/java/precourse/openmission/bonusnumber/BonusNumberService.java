@@ -3,15 +3,12 @@ package precourse.openmission.bonusnumber;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
-import precourse.openmission.domain.Bonus;
-import precourse.openmission.domain.Lotto;
+import precourse.openmission.pojo.Bonus;
+import precourse.openmission.pojo.Lotto;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 import precourse.openmission.winninglotto.WinningLotto;
 import precourse.openmission.winninglotto.WinningRepository;
-
-import java.util.Arrays;
-import java.util.List;
 
 /**
  * 보너스 번호 저장과 조회를 수행하는 서비스 계층입니다.

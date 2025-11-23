@@ -12,6 +12,7 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;
 import precourse.openmission.ApiTest;
+import precourse.openmission.bonusnumber.dto.BonusRequestDTO;
 import precourse.openmission.purchase.Purchase;
 import precourse.openmission.purchase.PurchaseRepository;
 import precourse.openmission.winninglotto.WinningLotto;
