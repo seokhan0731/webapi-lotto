@@ -1,6 +1,4 @@
-package precourse.openmission.domain;
-
-import org.springframework.stereotype.Component;
+package precourse.openmission.pojo;
 
 import java.util.List;
 

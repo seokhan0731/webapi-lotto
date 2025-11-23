@@ -1,4 +1,4 @@
-package precourse.openmission.domain;
+package precourse.openmission.pojo;
 
 import camp.nextstep.edu.missionutils.Randoms;
 import org.springframework.stereotype.Component;

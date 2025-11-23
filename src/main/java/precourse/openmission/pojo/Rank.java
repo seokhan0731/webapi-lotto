@@ -1,4 +1,4 @@
-package precourse.openmission.domain;
+package precourse.openmission.pojo;
 
 
 import java.util.ArrayList;

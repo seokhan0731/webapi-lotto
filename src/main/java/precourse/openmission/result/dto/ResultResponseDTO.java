@@ -1,4 +1,4 @@
-package precourse.openmission.result;
+package precourse.openmission.result.dto;
 
 import lombok.Getter;
 

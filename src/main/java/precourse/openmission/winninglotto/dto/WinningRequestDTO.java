@@ -1,4 +1,4 @@
-package precourse.openmission.winninglotto;
+package precourse.openmission.winninglotto.dto;
 
 import lombok.Getter;
 import lombok.Setter;

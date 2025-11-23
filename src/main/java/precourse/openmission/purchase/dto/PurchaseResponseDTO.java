@@ -1,6 +1,7 @@
-package precourse.openmission.purchase;
+package precourse.openmission.purchase.dto;
 
 import lombok.Getter;
+import precourse.openmission.purchase.Purchase;
 
 /**
  * 출력해줄 JSON 형식을 정의한 DTO

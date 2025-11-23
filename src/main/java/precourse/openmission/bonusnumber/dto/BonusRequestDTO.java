@@ -1,4 +1,4 @@
-package precourse.openmission.bonusnumber;
+package precourse.openmission.bonusnumber.dto;
 
 import lombok.Getter;
 import lombok.Setter;

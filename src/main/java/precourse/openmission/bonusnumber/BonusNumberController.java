@@ -2,6 +2,8 @@ package precourse.openmission.bonusnumber;
 
 import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
+import precourse.openmission.bonusnumber.dto.BonusRequestDTO;
+import precourse.openmission.bonusnumber.dto.BonusResponseDTO;
 
 /**
  * 보너스 번호 저장과 조회를 책임지는 api 컨트롤러 계층입니다.

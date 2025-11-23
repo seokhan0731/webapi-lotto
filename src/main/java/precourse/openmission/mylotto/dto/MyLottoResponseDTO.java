@@ -1,6 +1,7 @@
-package precourse.openmission.mylotto;
+package precourse.openmission.mylotto.dto;
 
 import lombok.Getter;
+import precourse.openmission.mylotto.MyLotto;
 
 /**
  * 발행된 로또 출력시, 출력값을 정의하는 DTO

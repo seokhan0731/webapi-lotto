@@ -1,4 +1,4 @@
-package precourse.openmission.domain;
+package precourse.openmission.pojo;
 
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;

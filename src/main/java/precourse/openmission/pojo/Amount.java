@@ -1,4 +1,4 @@
-package precourse.openmission.domain;
+package precourse.openmission.pojo;
 
 /**
  * 구매 금액 관련 로직을 수행하는 클래스입니다.

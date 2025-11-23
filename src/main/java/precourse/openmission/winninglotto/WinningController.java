@@ -1,9 +1,9 @@
 package precourse.openmission.winninglotto;
 
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import precourse.openmission.winninglotto.dto.WinningRequestDTO;
+import precourse.openmission.winninglotto.dto.WinningResponseDTO;
 
 /**
  * 당첨 번호를 관리하는 API 컨트롤러 계층입니다.

@@ -1,4 +1,4 @@
-package precourse.openmission.purchase;
+package precourse.openmission.purchase.dto;
 
 import lombok.Getter;
 import lombok.Setter;

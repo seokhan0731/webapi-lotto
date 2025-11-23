@@ -5,7 +5,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import precourse.openmission.bonusnumber.BonusNumber;
 import precourse.openmission.bonusnumber.BonusNumberRepository;
-import precourse.openmission.domain.*;
+import precourse.openmission.pojo.*;
 import precourse.openmission.mylotto.MyLotto;
 import precourse.openmission.mylotto.MyLottoRepository;
 import precourse.openmission.purchase.Purchase;

@@ -1,6 +1,7 @@
-package precourse.openmission.winninglotto;
+package precourse.openmission.winninglotto.dto;
 
 import lombok.Getter;
+import precourse.openmission.winninglotto.WinningLotto;
 
 /**
  * 당첨 로또 출력시, 출력값을 정의하는 DTO
